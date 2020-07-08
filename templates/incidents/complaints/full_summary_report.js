@@ -32,15 +32,6 @@ module.exports = data => {
               th {
                 border-bottom: none !important;
               }
-              input {
-                border: 0;
-                border-bottom: 1px solid black;
-                border-style: dotted;
-                background: none;
-                width: 62%;
-                margin-top: 5px;
-                text-align: center;
-              }
               .bold {
                 font-weight: bold;
               }
@@ -60,7 +51,7 @@ module.exports = data => {
             </style>
           </head>
           <body class="document-border">
-            <div class="container">
+            <div>
               <div class="row">
                 <div class="col-12">
                   <table class="table table-bordered">
@@ -97,7 +88,7 @@ module.exports = data => {
                       </tr>
                     </thead>
                     <tbody>
-                      ${generateRows(data.complaintsPast24hours)}
+                      ${generateRows(data.complaints)}
                     </tbody>
                   </table>
                 </div>
@@ -111,25 +102,31 @@ module.exports = data => {
 };
 
 function generateRows(rowData) {
-  var i = 1;
-  return `<tr>
-    <td>${i++}</td>
-    <td>${rowData.national.disputes}</td>
-    <td>${rowData.national.disputes}</td>
-    <td>${rowData.national.disputes}</td>
-    <td>${rowData.national.violationOfLaws}</td>
-    <td>${rowData.national.others}</td>
-    <td>${rowData.national.amount}</td>
-    <td>${rowData.national.others}</td>
-    <td>${rowData.national.amount}</td>
-    <td>${rowData.national.others}</td>
-    <td>${rowData.national.amount}</td>
-    <td>${rowData.national.others}</td>
-    <td>${rowData.national.amount}</td>
-    <td>${rowData.national.others}</td>
-    <td>${rowData.national.amount}</td>
-    <td>${rowData.national.others}</td>
-    <td>${rowData.national.others}</td>
-    <td>${rowData.national.amount}</td>
+  var j = 1;
+  let rowCollection = "";
+  for (let i = 0; i < rowData.length; i++) {
+    let row = "";
+    row = `<tr>
+    <td>${j++}</td>
+    <td>${rowData[i].complaintNo}</td>
+    <td>${rowData[i].channelLtr}</td>
+    <td>${rowData[i].channelTel}</td>
+    <td>${rowData[i].channelFax}</td>
+    <td>${rowData[i].channelMail}</td>
+    <td>${rowData[i].complaintDate}</td>
+    <td>${rowData[i].reporter}</td>
+    <td>${rowData[i].location}</td>
+    <td>${rowData[i].complainSummery}</td>
+    <td>${rowData[i].violentAction}</td>
+    <td>${rowData[i].violationOfElectionLaw}</td>
+    <td>${rowData[i].other}</td>
+    <td>${rowData[i].law}</td>
+    <td>${rowData[i].medium}</td>
+    <td>${rowData[i].critical}</td>
+    <td>${rowData[i].reportedParty}</td>
+    <td>${rowData[i].progress}</td>
   </tr>`;
+  rowCollection += row;
+  }
+  return rowCollection;
 }
