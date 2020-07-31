@@ -47,9 +47,9 @@ module.exports = async function(req, res) {
     }
 
     if (!global.browser) {
-        const browser = await puppeteer.launch({ args: ['--no-sandbox'] })
+        await reGenerateBrowser();
     }
-    const page = await global.browser.newPage();
+    const page = await getNewPageFromBrowser();
     page.setDefaultNavigationTimeout(0);
     if (req.body.url) {
         await page.goto(req.body.url);
@@ -70,6 +70,26 @@ module.exports = async function(req, res) {
         path: `/exports/${randomID}.pdf`,
         expires: timestamp + expiresIn
     });
+}
+
+async function getNewPageFromBrowser() {
+    const newPage = await global.browser.newPage().catch( (e) => {
+        console.log("Chrome engine එක පොඩ්ඩක් crash වෙලා මචන්.")
+    })
+
+    if (newPage) {
+        return newPage;
+    } else {
+        await reGenerateBrowser();
+        console.log("Created a new page object.");
+        return await global.browser.newPage()
+    }
+
+}
+
+async function reGenerateBrowser() {
+    global.browser = await puppeteer.launch({ args: ['--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage'] });
+    console.log('Browser object regenerated.')
 }
 
 function revisedRandId() {
