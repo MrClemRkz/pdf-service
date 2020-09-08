@@ -11,6 +11,7 @@ module.exports = (data) => {
     hour12: false,
   };
   const today = new Intl.DateTimeFormat("en-LK", options).format(new Date());
+  let showECData = (data.centre == "" || data.centre == 'ec-hq' ) ? true : false;
 
   return `
         <!DOCTYPE html>
@@ -139,7 +140,7 @@ module.exports = (data) => {
                       </tr>
                     </thead>
                     <tbody>
-                      ${generateRows(data.complaintsPast24hours)}
+                      ${generateRows(data.complaintsPast24hours, showECData)}
                     </tbody>
                   </table>
                 </div>
@@ -192,7 +193,7 @@ module.exports = (data) => {
                       </tr>
                     </thead>
                     <tbody>
-                      ${generateRows(data.complaintsSummary)}
+                      ${generateRows(data.complaintsSummary, showECData)}
                     </tbody>
                   </div>
                 </table>
@@ -232,9 +233,9 @@ module.exports = (data) => {
         `;
 };
 
-function generateRows(rowData) {
+function generateRows(rowData, showECData) {
   return `
-  <tr>
+  <tr style="display:${ (showECData) ? "" : "none"}">
     <th scope="row">
       ජාතික මැතිවරණ පැමිණිලි කළමනාකරණ මධ්‍යස්ථානය <br />
       National Election Complaint Management Centre <br />
